@@ -1,287 +1,270 @@
-/* My motors Supplies — lógica de tienda: catálogo, modal, carrito, checkout WhatsApp. */
+/* My motors Supplies — catálogo, filtros por marca, modal, carrito, checkout WhatsApp. */
 (function () {
   "use strict";
 
   const $ = (s, c) => (c || document).querySelector(s);
   const $$ = (s, c) => Array.from((c || document).querySelectorAll(s));
   const money = (n) => CONFIG.currency + n.toFixed(2);
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const CART_KEY = "mms_cart_v2";
 
-  /* ---------- WhatsApp links ---------- */
-  const waLink = (text) =>
-    "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(text);
-  const genericMsg =
-    "Hola " + CONFIG.storeName + ", quiero información sobre un repuesto.";
-  ["navWhatsapp", "heroWhatsapp", "brandsWhatsapp", "footerWhatsapp"].forEach((id) => {
-    const a = document.getElementById(id);
-    if (a) a.href = waLink(genericMsg);
-  });
-  const emptyWa = $("#emptyWhatsapp");
-  if (emptyWa) emptyWa.href = waLink(genericMsg);
-  $("#footerLocation").textContent = CONFIG.location;
-  $("#footerHours").textContent = CONFIG.hours;
-  $("#footerCats").innerHTML = CATEGORIES.filter((c) => c !== "Todos")
-    .map((c) => `<a href="#catalogo" data-cat="${c}">${c}</a>`).join("");
+  let state = { brand: "Todas", category: "Todos", query: "" };
+  let cart = loadCart();
+  let modalProduct = null, modalQty = 1;
 
-  /* ---------- Estado ---------- */
-  let activeCat = "Todos";
-  let query = "";
-  let cart = [];
-  try { cart = JSON.parse(localStorage.getItem("mp_cart") || "[]"); } catch (e) { cart = []; }
-  const saveCart = () => localStorage.setItem("mp_cart", JSON.stringify(cart));
-  const cartQty = () => cart.reduce((s, i) => s + i.qty, 0);
-  const cartTotal = () =>
-    cart.reduce((s, i) => {
-      const p = PRODUCTS.find((x) => x.id === i.id);
-      return s + (p ? p.price * i.qty : 0);
-    }, 0);
+  /* ── Config / WhatsApp ── */
+  function waLink(text) {
+    return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(text || "Hola, quiero cotizar un repuesto.");
+  }
+  function applyConfig() {
+    $$("[data-config='location']").forEach((el) => (el.textContent = CONFIG.location));
+    $$("[data-config='hours']").forEach((el) => (el.textContent = CONFIG.hours));
+    $$("[data-wa-link]").forEach((a) => {
+      a.href = waLink(a.getAttribute("data-wa-text") || undefined);
+      a.target = "_blank"; a.rel = "noopener";
+    });
+  }
 
-  /* ---------- Catálogo ---------- */
-  const grid = $("#grid"), pills = $("#catPills"), emptyState = $("#emptyState");
-
-  pills.innerHTML = CATEGORIES.map((c) =>
-    `<button class="pill${c === "Todos" ? " active" : ""}" role="tab" data-cat="${c}">${c}</button>`
-  ).join("");
-
-  pills.addEventListener("click", (e) => {
-    const b = e.target.closest(".pill");
-    if (!b) return;
-    activeCat = b.dataset.cat;
-    $$(".pill", pills).forEach((p) => p.classList.toggle("active", p === b));
-    render();
-  });
-  document.addEventListener("click", (e) => {
-    const a = e.target.closest("[data-cat]");
-    if (!a || !pills.contains(a)) {
-      const cat = a && a.dataset ? a.dataset.cat : null;
-      if (cat && CATEGORIES.includes(cat)) {
-        activeCat = cat;
-        $$(".pill", pills).forEach((p) => p.classList.toggle("active", p.dataset.cat === cat));
-        render();
-      }
-    }
-  });
-
-  $("#searchInput").addEventListener("input", (e) => {
-    query = e.target.value.trim().toLowerCase();
-    render();
-  });
+  /* ── Filtros ── */
+  function buildChips() {
+    const bc = $("#brandChips"), cc = $("#catChips");
+    bc.innerHTML = ""; cc.innerHTML = "";
+    BRANDS.forEach((b) => {
+      const btn = document.createElement("button");
+      btn.className = "chip" + (b === state.brand ? " active" : "");
+      btn.textContent = b === "Todas" ? "Todas las marcas" : b;
+      btn.onclick = () => { state.brand = b; buildChips(); render(); };
+      bc.appendChild(btn);
+    });
+    CATEGORIES.forEach((c) => {
+      const btn = document.createElement("button");
+      btn.className = "chip" + (c === state.category ? " active" : "");
+      btn.textContent = c;
+      btn.onclick = () => { state.category = c; buildChips(); render(); };
+      cc.appendChild(btn);
+    });
+  }
 
   function filtered() {
+    const q = state.query.trim().toLowerCase();
     return PRODUCTS.filter((p) => {
-      const okCat = activeCat === "Todos" || p.category === activeCat;
-      const okQ = !query || (p.name + " " + p.category + " " + p.desc).toLowerCase().includes(query);
-      return okCat && okQ;
+      const brandOk = state.brand === "Todas" || p.brand === state.brand || p.brand === "Universal";
+      const catOk = state.category === "Todos" || p.category === state.category;
+      const qOk = !q || [p.name, p.desc, p.fits, p.oem, p.category, p.brand].join(" ").toLowerCase().includes(q);
+      return brandOk && catOk && qOk;
     });
   }
 
   function render() {
     const list = filtered();
-    emptyState.hidden = list.length > 0;
-    grid.innerHTML = list.map((p) => `
-      <article class="card reveal" data-id="${p.id}" tabindex="0" role="button" aria-label="Ver ${p.name}">
-        <div class="card-media">
-          <img src="${p.img}" alt="${p.name}" loading="lazy">
-          ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
-        </div>
-        <div class="card-body">
-          <p class="tag">${p.category}</p>
-          <h3>${p.name}</h3>
-          <div class="card-foot">
-            <span class="price">${money(p.price)}</span>
-            <button class="add-btn" data-add="${p.id}" aria-label="Agregar ${p.name} al carrito">
-              <i class="ph ph-plus"></i><span>Agregar</span>
-            </button>
-          </div>
-        </div>
-      </article>`).join("");
-    observeReveals();
+    const grid = $("#grid");
+    grid.classList.add("fading");
+    setTimeout(() => {
+      grid.innerHTML = "";
+      list.forEach((p, i) => grid.appendChild(cardEl(p, i)));
+      $("#empty").hidden = list.length > 0;
+      $("#resultCount").innerHTML = list.length === PRODUCTS.length
+        ? "Mostrando los <strong>" + list.length + "</strong> repuestos"
+        : "<strong>" + list.length + "</strong> repuesto" + (list.length === 1 ? "" : "s") +
+          (state.brand !== "Todas" ? " para <strong>" + state.brand + "</strong>" : "") +
+          (state.category !== "Todos" ? " en <strong>" + state.category + "</strong>" : "");
+      grid.classList.remove("fading");
+    }, 160);
   }
 
-  grid.addEventListener("click", (e) => {
-    const add = e.target.closest("[data-add]");
-    if (add) { e.stopPropagation(); addToCart(add.dataset.add, 1); return; }
-    const card = e.target.closest(".card");
-    if (card) openModal(card.dataset.id);
-  });
-  grid.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      const card = e.target.closest(".card");
-      if (card) openModal(card.dataset.id);
-    }
-  });
+  function cardEl(p, i) {
+    const el = document.createElement("article");
+    el.className = "card";
+    el.style.animationDelay = Math.min(i * 40, 400) + "ms";
+    el.innerHTML =
+      '<div class="card-media">' +
+        (p.badge ? '<span class="card-badge">' + p.badge + "</span>" : "") +
+        '<span class="card-brand">' + p.brand + "</span>" +
+        '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy">' +
+      "</div>" +
+      '<div class="card-body">' +
+        '<span class="card-cat">' + p.category + "</span>" +
+        "<h3>" + p.name + "</h3>" +
+        '<p class="card-fits"><i class="ph ph-car"></i>Aplica a: ' + p.fits + "</p>" +
+        '<div class="card-foot">' +
+          '<p class="price">' + money(p.price) + " <small>USD</small></p>" +
+          '<button class="add-btn"><i class="ph ph-plus"></i> Agregar</button>' +
+        "</div>" +
+      "</div>";
+    el.querySelector(".card-media").onclick = () => openModal(p);
+    el.querySelector("h3").onclick = () => openModal(p);
+    el.querySelector(".add-btn").onclick = (e) => { e.stopPropagation(); addToCart(p.id, 1); };
+    return el;
+  }
 
-  /* ---------- Modal ---------- */
-  const overlay = $("#overlay");
-  let modalId = null, modalQty = 1;
-
-  function openModal(id) {
-    const p = PRODUCTS.find((x) => x.id === id);
-    if (!p) return;
-    modalId = id; modalQty = 1;
-    $("#modalImg").src = p.img;
-    $("#modalImg").alt = p.name;
-    $("#modalCat").textContent = p.category;
+  /* ── Modal ── */
+  function openModal(p) {
+    modalProduct = p; modalQty = 1;
+    $("#qtyVal").textContent = "1";
+    const img = $("#modalImg");
+    img.removeAttribute("src");
+    img.src = p.img; img.alt = p.name;
+    $("#modalBrand").textContent = p.brand;
     $("#modalName").textContent = p.name;
     $("#modalDesc").textContent = p.desc;
+    $("#modalFits").textContent = p.fits;
+    $("#modalOem").textContent = p.oem || "—";
+    $("#modalCat").textContent = p.category;
     $("#modalPrice").textContent = money(p.price);
-    $("#qtyVal").textContent = "1";
-    overlay.hidden = false;
-    document.body.style.overflow = "hidden";
-    $("#modalClose").focus();
+    $("#modalWa").href = waLink("Hola, me interesa este repuesto: " + p.name + " (" + money(p.price) + "). ¿Aplica a mi carro?");
+    $("#modalWa").target = "_blank"; $("#modalWa").rel = "noopener";
+    showOverlay($("#modalOverlay"));
   }
-  function closeModal() {
-    overlay.hidden = true;
-    document.body.style.overflow = "";
+  function showOverlay(o) { o.hidden = false; document.body.style.overflow = "hidden"; }
+  function hideOverlay(o) {
+    o.classList.add("closing");
+    setTimeout(() => { o.hidden = true; o.classList.remove("closing"); document.body.style.overflow = ""; }, 240);
   }
-  $("#modalClose").addEventListener("click", closeModal);
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeModal(); closeCart(); } });
-  $("#qtyMinus").addEventListener("click", () => {
-    modalQty = Math.max(1, modalQty - 1);
-    $("#qtyVal").textContent = modalQty;
-  });
-  $("#qtyPlus").addEventListener("click", () => {
-    modalQty = Math.min(99, modalQty + 1);
-    $("#qtyVal").textContent = modalQty;
-  });
-  $("#modalAdd").addEventListener("click", () => {
-    addToCart(modalId, modalQty);
-    closeModal();
-  });
 
-  /* ---------- Carrito ---------- */
-  const cartEl = $("#cart"), scrim = $("#scrim");
+  /* ── Carrito ── */
+  function loadCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || {}; } catch (e) { return {}; } }
+  function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+  function cartQty() { return Object.values(cart).reduce((a, b) => a + b, 0); }
+  function cartTotal() {
+    return Object.entries(cart).reduce((sum, [id, q]) => {
+      const p = PRODUCTS.find((x) => x.id === id);
+      return p ? sum + p.price * q : sum;
+    }, 0);
+  }
 
   function addToCart(id, qty) {
-    const line = cart.find((i) => i.id === id);
-    if (line) line.qty = Math.min(99, line.qty + qty);
-    else cart.push({ id, qty });
+    cart[id] = (cart[id] || 0) + qty;
     saveCart(); renderCart();
+    const badge = $("#cartCount");
+    badge.classList.remove("pop"); void badge.offsetWidth; badge.classList.add("pop");
     const p = PRODUCTS.find((x) => x.id === id);
-    toast((p ? p.name : "Producto") + " agregado al pedido");
+    toast("Agregado: " + p.name);
   }
 
   function renderCart() {
     const n = cartQty();
-    const badge = $("#cartCount");
-    badge.hidden = n === 0;
-    badge.textContent = n;
-    const box = $("#cartItems");
-    if (!cart.length) {
-      box.innerHTML = `<div class="cart-empty"><i class="ph ph-shopping-cart"></i><p>Tu pedido está vacío.<br>Agrega repuestos del catálogo.</p></div>`;
-    } else {
-      box.innerHTML = cart.map((i) => {
-        const p = PRODUCTS.find((x) => x.id === i.id);
-        if (!p) return "";
-        return `
-        <div class="cart-item">
-          <img src="${p.img}" alt="${p.name}">
-          <div>
-            <h4>${p.name}</h4>
-            <p class="muted">${money(p.price)} c/u</p>
-            <div class="qty">
-              <button data-dec="${p.id}" aria-label="Quitar uno"><i class="ph ph-minus"></i></button>
-              <span>${i.qty}</span>
-              <button data-inc="${p.id}" aria-label="Agregar uno"><i class="ph ph-plus"></i></button>
-            </div>
-          </div>
-          <div class="cart-item-right">
-            <strong>${money(p.price * i.qty)}</strong><br>
-            <button class="remove" data-rem="${p.id}">Quitar</button>
-          </div>
-        </div>`;
-      }).join("");
-    }
+    $("#cartCount").textContent = n;
+    $("#cartHeadCount").textContent = n ? "(" + n + ")" : "";
     $("#cartTotal").textContent = money(cartTotal());
-  }
-
-  $("#cartItems").addEventListener("click", (e) => {
-    const inc = e.target.closest("[data-inc]");
-    const dec = e.target.closest("[data-dec]");
-    const rem = e.target.closest("[data-rem]");
-    if (inc) { cart.find((i) => i.id === inc.dataset.inc).qty++; }
-    else if (dec) {
-      const line = cart.find((i) => i.id === dec.dataset.dec);
-      line.qty--;
-      if (line.qty <= 0) cart = cart.filter((i) => i.id !== line.id);
-    }
-    else if (rem) { cart = cart.filter((i) => i.id !== rem.dataset.rem); }
-    else return;
-    saveCart(); renderCart();
-  });
-
-  function openCart() {
-    renderCart();
-    cartEl.hidden = false; scrim.hidden = false;
-    document.body.style.overflow = "hidden";
-  }
-  function closeCart() {
-    cartEl.hidden = true; scrim.hidden = true;
-    document.body.style.overflow = "";
-  }
-  $("#cartBtn").addEventListener("click", openCart);
-  $("#cartClose").addEventListener("click", closeCart);
-  scrim.addEventListener("click", closeCart);
-
-  $("#checkoutBtn").addEventListener("click", () => {
-    if (!cart.length) { toast("Agrega al menos un repuesto"); return; }
-    const lines = cart.map((i) => {
-      const p = PRODUCTS.find((x) => x.id === i.id);
-      return `• ${i.qty}x ${p.name} — ${money(p.price * i.qty)}`;
-    });
-    const msg = `Hola ${CONFIG.storeName}, quiero pedir:\n\n${lines.join("\n")}\n\nTotal: ${money(cartTotal())}`;
-    window.open(waLink(msg), "_blank", "noopener");
-  });
-
-  /* ---------- Toast ---------- */
-  let toastT;
-  function toast(msg) {
-    const t = $("#toast");
-    t.textContent = msg;
-    t.hidden = false;
-    requestAnimationFrame(() => t.classList.add("show"));
-    clearTimeout(toastT);
-    toastT = setTimeout(() => {
-      t.classList.remove("show");
-      setTimeout(() => { t.hidden = true; }, 350);
-    }, 2200);
-  }
-
-  /* ---------- Nav móvil ---------- */
-  const navToggle = $("#navToggle"), navMobile = $("#navMobile");
-  navToggle.addEventListener("click", () => {
-    const open = navMobile.hidden;
-    navMobile.hidden = !open;
-    navToggle.setAttribute("aria-expanded", String(open));
-    navToggle.innerHTML = open ? '<i class="ph ph-x"></i>' : '<i class="ph ph-list"></i>';
-  });
-  navMobile.addEventListener("click", (e) => {
-    if (e.target.closest("a")) {
-      navMobile.hidden = true;
-      navToggle.setAttribute("aria-expanded", "false");
-      navToggle.innerHTML = '<i class="ph ph-list"></i>';
-    }
-  });
-
-  /* ---------- Reveal on scroll ---------- */
-  let io;
-  function observeReveals() {
-    if (reduceMotion) {
-      $$(".reveal").forEach((el) => el.classList.add("visible"));
+    const box = $("#cartItems");
+    box.innerHTML = "";
+    const ids = Object.keys(cart);
+    if (!ids.length) {
+      box.innerHTML = '<div class="cart-empty"><i class="ph ph-shopping-cart"></i><p>Tu carrito está vacío.<br>Agrega repuestos del catálogo.</p></div>';
       return;
     }
-    if (!io) {
-      io = new IntersectionObserver((entries) => {
-        entries.forEach((en) => {
-          if (en.isIntersecting) { en.target.classList.add("visible"); io.unobserve(en.target); }
-        });
-      }, { threshold: 0.12 });
-    }
-    $$(".reveal:not(.visible)").forEach((el) => io.observe(el));
+    ids.forEach((id) => {
+      const p = PRODUCTS.find((x) => x.id === id);
+      if (!p) return;
+      const q = cart[id];
+      const el = document.createElement("div");
+      el.className = "cart-item";
+      el.innerHTML =
+        '<img src="' + p.img + '" alt="' + p.name + '">' +
+        '<div class="cart-item-info"><strong>' + p.name + "</strong><span>" + money(p.price) + " c/u</span>" +
+          '<div class="qty"><button data-a="dec" aria-label="Menos"><i class="ph ph-minus"></i></button><span>' + q + '</span><button data-a="inc" aria-label="Más"><i class="ph ph-plus"></i></button></div>' +
+        "</div>" +
+        '<div class="cart-item-right"><strong>' + money(p.price * q) + '</strong><button class="cart-remove" aria-label="Quitar"><i class="ph ph-trash"></i></button></div>';
+      el.querySelector('[data-a="dec"]').onclick = () => { cart[id]--; if (cart[id] <= 0) delete cart[id]; saveCart(); renderCart(); };
+      el.querySelector('[data-a="inc"]').onclick = () => { cart[id]++; saveCart(); renderCart(); };
+      el.querySelector(".cart-remove").onclick = () => { delete cart[id]; saveCart(); renderCart(); };
+      box.appendChild(el);
+    });
   }
 
+  function checkout() {
+    const ids = Object.keys(cart);
+    if (!ids.length) { toast("El carrito está vacío"); return; }
+    let msg = "Hola, quiero hacer un pedido en My motors Supplies:\n\n";
+    ids.forEach((id, i) => {
+      const p = PRODUCTS.find((x) => x.id === id);
+      if (p) msg += (i + 1) + ". " + p.name + " (" + p.brand + ") x" + cart[id] + " — " + money(p.price * cart[id]) + "\n";
+    });
+    msg += "\nTotal estimado: " + money(cartTotal()) + "\n¿Confirmamos disponibilidad y envío?";
+    window.open(waLink(msg), "_blank", "noopener");
+  }
+
+  /* ── Toast ── */
+  let toastTimer;
+  function toast(msg) {
+    let t = $(".toast");
+    if (!t) { t = document.createElement("div"); t.className = "toast"; document.body.appendChild(t); }
+    t.innerHTML = '<i class="ph ph-check-circle"></i><span>' + msg + "</span>";
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+  }
+
+  /* ── Marquee / contadores / reveals ── */
+  function buildMarquee() {
+    const brands = BRANDS.slice(1);
+    const half = brands.map((b) => "<span>" + b + "</span>").join("");
+    $("#marqueeTrack").innerHTML = half + half;
+  }
+  function initCounters() {
+    const els = $$("[data-count]");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        const target = +e.target.dataset.count, t0 = performance.now(), dur = 1400;
+        (function tick(t) {
+          const k = Math.min((t - t0) / dur, 1), v = Math.round(target * (1 - Math.pow(1 - k, 3)));
+          e.target.textContent = v;
+          if (k < 1) requestAnimationFrame(tick);
+        })(t0);
+      });
+    }, { threshold: 0.6 });
+    els.forEach((el) => io.observe(el));
+  }
+  function initReveals() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = (e.target.dataset.d || 0) + "ms";
+          e.target.classList.add("in"); io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    $$(".reveal").forEach((el, i) => { el.dataset.d = (i % 4) * 90; io.observe(el); });
+  }
+
+  /* ── Eventos ── */
+  function initEvents() {
+    $("#searchToggle").onclick = () => { const b = $("#searchBar"); b.hidden = !b.hidden; if (!b.hidden) $("#searchInput").focus(); };
+    $("#searchClose").onclick = () => { $("#searchBar").hidden = true; $("#searchInput").value = ""; state.query = ""; render(); };
+    $("#searchInput").addEventListener("input", (e) => { state.query = e.target.value; render(); });
+    $("#emptyReset").onclick = () => {
+      state = { brand: "Todas", category: "Todos", query: "" };
+      $("#searchInput").value = ""; buildChips(); render();
+    };
+    $("#menuBtn").onclick = () => $("#nav").classList.toggle("open");
+    $$("#nav a").forEach((a) => a.addEventListener("click", () => $("#nav").classList.remove("open")));
+
+    $("#cartOpen").onclick = () => { renderCart(); showOverlay($("#cartOverlay")); };
+    $("#cartClose").onclick = () => hideOverlay($("#cartOverlay"));
+    $("#cartOverlay").addEventListener("click", (e) => { if (e.target === $("#cartOverlay")) hideOverlay($("#cartOverlay")); });
+    $("#clearCart").onclick = () => { cart = {}; saveCart(); renderCart(); };
+    $("#checkoutBtn").onclick = checkout;
+
+    $("#modalClose").onclick = () => hideOverlay($("#modalOverlay"));
+    $("#modalOverlay").addEventListener("click", (e) => { if (e.target === $("#modalOverlay")) hideOverlay($("#modalOverlay")); });
+    $("#qtyMinus").onclick = () => { if (modalQty > 1) { modalQty--; $("#qtyVal").textContent = modalQty; } };
+    $("#qtyPlus").onclick = () => { modalQty++; $("#qtyVal").textContent = modalQty; };
+    $("#modalAdd").onclick = () => { if (modalProduct) { addToCart(modalProduct.id, modalQty); hideOverlay($("#modalOverlay")); } };
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { ["#modalOverlay", "#cartOverlay"].forEach((s) => { if (!$(s).hidden) hideOverlay($(s)); }); }
+    });
+    window.addEventListener("scroll", () => $("#header").classList.toggle("scrolled", scrollY > 10), { passive: true });
+  }
+
+  /* ── Init ── */
+  applyConfig();
+  buildChips();
+  buildMarquee();
   render();
   renderCart();
-  observeReveals();
+  initEvents();
+  initReveals();
+  initCounters();
 })();

@@ -3,187 +3,227 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My motors Supplies — Repuestos de moto en Venezuela</title>
-<meta name="description" content="Repuestos de moto: frenos, transmisión, motor, eléctrico y suspensión. Pide por WhatsApp y recibe hoy.">
+<title>My motors Supplies — Repuestos de carro en Venezuela</title>
+<meta name="description" content="Repuestos de carro Chevrolet, Toyota, Honda, Ford, Hyundai, Kia, Nissan y Mazda. Envíos a todo el país. Cotiza por WhatsApp.">
+<link rel="icon" href="img/logo.png" onerror="this.remove()">
+<link rel="preload" href="fonts/BarlowCondensed-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Barlow-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/styles.css">
 <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 </head>
 <body>
 
-<header class="nav" id="nav">
-  <div class="nav-inner">
-    <a class="brand" href="#inicio" aria-label="My motors Supplies inicio">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-name">MY MOTORS <em>SUPPLIES</em></span>
-    </a>
-    <nav class="nav-links" aria-label="Principal">
-      <a href="#inicio">Inicio</a>
-      <a href="#catalogo">Catálogo</a>
-      <a href="#marcas">Marcas</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-    <div class="nav-actions">
-      <button class="icon-btn" id="cartBtn" aria-label="Abrir carrito">
-        <i class="ph ph-shopping-cart"></i>
-        <span class="cart-count" id="cartCount" hidden>0</span>
-      </button>
-      <a class="btn btn-accent btn-sm" id="navWhatsapp" href="#" target="_blank" rel="noopener">
-        <i class="ph ph-whatsapp-logo"></i><span>Pedir por WhatsApp</span>
-      </a>
-      <button class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
-        <i class="ph ph-list"></i>
-      </button>
-    </div>
-  </div>
-  <nav class="nav-mobile" id="navMobile" aria-label="Móvil" hidden>
-    <a href="#inicio">Inicio</a>
+<!-- ══════════ TOPBAR ══════════ -->
+<div class="topbar">
+  <span><i class="ph ph-map-pin"></i> <span data-config="location">Venezuela</span></span>
+  <span class="topbar-sep">·</span>
+  <span><i class="ph ph-clock"></i> <span data-config="hours">Lun–Sáb · 8am–6pm</span></span>
+  <a class="topbar-wa" href="#" data-wa-link><i class="ph ph-whatsapp-logo"></i> Cotiza por WhatsApp</a>
+</div>
+
+<!-- ══════════ HEADER ══════════ -->
+<header class="header" id="header">
+  <a class="logo" href="#top">
+    <span class="logo-mark">MMS</span>
+    <span class="logo-text">My motors <em>Supplies</em></span>
+  </a>
+  <nav class="nav" id="nav">
     <a href="#catalogo">Catálogo</a>
-    <a href="#marcas">Marcas</a>
+    <a href="#confianza">Por qué nosotros</a>
     <a href="#contacto">Contacto</a>
   </nav>
+  <div class="header-actions">
+    <button class="search-toggle" id="searchToggle" aria-label="Buscar"><i class="ph ph-magnifying-glass"></i></button>
+    <button class="cart-btn" id="cartOpen" aria-label="Abrir carrito">
+      <i class="ph ph-shopping-cart"></i><span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="menu-btn" id="menuBtn" aria-label="Menú"><i class="ph ph-list"></i></button>
+  </div>
 </header>
+<div class="search-bar" id="searchBar" hidden>
+  <i class="ph ph-magnifying-glass"></i>
+  <input type="search" id="searchInput" placeholder="Busca pastillas, alternador, Aveo, Corolla…" autocomplete="off">
+  <button id="searchClose" aria-label="Cerrar búsqueda"><i class="ph ph-x"></i></button>
+</div>
 
-<main id="inicio">
+<main id="top">
 
-  <!-- HERO: split 50/50, left-aligned (anti-center bias) -->
+  <!-- ══════════ HERO ══════════ -->
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow">Repuestos · Venezuela</p>
-        <h1>Tu moto<br><em>no se detiene.</em></h1>
-        <p class="hero-sub">Frenos, transmisión, motor y más para las marcas más rodadas del país. Pide por WhatsApp.</p>
-        <div class="hero-ctas">
-          <a class="btn btn-accent" href="#catalogo">Ver catálogo</a>
-          <a class="btn btn-ghost" id="heroWhatsapp" href="#" target="_blank" rel="noopener">
-            <i class="ph ph-whatsapp-logo"></i><span>Pedir por WhatsApp</span>
-          </a>
+        <p class="eyebrow hero-anim">Repuestos de carro · Venezuela</p>
+        <h1 class="hero-anim">El repuesto exacto<br>para tu carro, <em>sin vueltas.</em></h1>
+        <p class="hero-sub hero-anim">Chevrolet, Toyota, Honda, Ford, Hyundai y más. Busca por marca, verifica la compatibilidad y pide por WhatsApp. Envíos a todo el país.</p>
+        <div class="hero-ctas hero-anim">
+          <a href="#catalogo" class="btn btn-primary">Ver catálogo <i class="ph ph-arrow-down"></i></a>
+          <a href="#" class="btn btn-ghost" data-wa-link><i class="ph ph-whatsapp-logo"></i> Asesoría por WhatsApp</a>
+        </div>
+        <div class="hero-stats hero-anim">
+          <div class="stat"><strong data-count="40">0</strong><span>repuestos</span></div>
+          <div class="stat"><strong data-count="8">0</strong><span>marcas</span></div>
+          <div class="stat"><strong data-count="12">0</strong><span>categorías</span></div>
         </div>
       </div>
-      <div class="hero-media">
-        <img src="img/hero.jpg" alt="Motor de motocicleta en taller" fetchpriority="high">
-        <span class="hero-tick" aria-hidden="true"></span>
+      <div class="hero-media hero-anim">
+        <img src="img/hero.jpg" alt="Repuestos de carro My motors Supplies" fetchpriority="high">
+        <div class="hero-card hero-card-a"><i class="ph ph-shield-check"></i><div><strong>Garantía de ajuste</strong><span>Si no le queda, lo cambiamos</span></div></div>
+        <div class="hero-card hero-card-b"><i class="ph ph-truck"></i><div><strong>Envío nacional</strong><span>Caracas · La Guaira · todo el país</span></div></div>
       </div>
+    </div>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track" id="marqueeTrack"></div>
     </div>
   </section>
 
-  <!-- TRUST STRIP: dividers, not cards -->
-  <section class="trust" aria-label="Ventajas">
-    <div class="trust-inner">
-      <div class="trust-item reveal">
-        <i class="ph ph-truck"></i>
-        <div><strong>Envío a todo el país</strong><span>Despachamos el mismo día</span></div>
-      </div>
-      <div class="trust-item reveal">
-        <i class="ph ph-shield-check"></i>
-        <div><strong>Garantía en cada pieza</strong><span>Originales y genéricos de calidad</span></div>
-      </div>
-      <div class="trust-item reveal">
-        <i class="ph ph-currency-dollar"></i>
-        <div><strong>Precios en USD</strong><span>Sin sorpresas al pagar</span></div>
-      </div>
+  <!-- ══════════ TRUST ══════════ -->
+  <section class="trust">
+    <div class="trust-grid">
+      <div class="trust-item reveal"><i class="ph ph-shield-check"></i><div><strong>Compatibilidad verificada</strong><span>Cada ficha indica marca, modelos y referencia OEM.</span></div></div>
+      <div class="trust-item reveal"><i class="ph ph-truck"></i><div><strong>Envío a todo el país</strong><span>Despachamos a Caracas, La Guaira y el resto de Venezuela.</span></div></div>
+      <div class="trust-item reveal"><i class="ph ph-currency-dollar"></i><div><strong>Pago en divisas</strong><span>Zelle, pago móvil y transferencia.</span></div></div>
+      <div class="trust-item reveal"><i class="ph ph-whatsapp-logo"></i><div><strong>Asesoría real</strong><span>Te ayudamos a elegir el repuesto exacto por WhatsApp.</span></div></div>
     </div>
   </section>
 
-  <!-- CATÁLOGO -->
+  <!-- ══════════ CATÁLOGO ══════════ -->
   <section class="catalog" id="catalogo">
-    <div class="catalog-head">
-      <h2>Catálogo</h2>
-      <div class="catalog-tools">
-        <label class="search">
-          <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
-          <input type="search" id="searchInput" placeholder="Buscar repuesto…" aria-label="Buscar repuesto">
-        </label>
+    <div class="section-head reveal">
+      <p class="eyebrow">Catálogo</p>
+      <h2>Encuentra tu repuesto</h2>
+      <p class="section-sub">Filtra por la marca de tu carro, por categoría o busca directo por pieza o modelo.</p>
+    </div>
+
+    <div class="filters reveal">
+      <div class="filter-group">
+        <span class="filter-label"><i class="ph ph-car"></i> Marca de tu carro</span>
+        <div class="chips" id="brandChips"></div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label"><i class="ph ph-gear-six"></i> Categoría</span>
+        <div class="chips chips-soft" id="catChips"></div>
       </div>
     </div>
-    <div class="cat-pills" id="catPills" role="tablist" aria-label="Categorías"></div>
+
+    <p class="result-count reveal" id="resultCount"></p>
     <div class="grid" id="grid"></div>
-    <p class="empty" id="emptyState" hidden>No encontramos ese repuesto. <a href="#" id="emptyWhatsapp" target="_blank" rel="noopener">Pregúntanos por WhatsApp</a> y lo buscamos.</p>
+    <div class="empty" id="empty" hidden>
+      <i class="ph ph-magnifying-glass"></i>
+      <p>No encontramos repuestos con esos filtros.</p>
+      <button class="btn btn-ghost" id="emptyReset">Limpiar filtros</button>
+    </div>
   </section>
 
-  <!-- MARCAS / SERVICIO: split editorial, layout distinto al catálogo -->
-  <section class="brands" id="marcas">
-    <div class="brands-inner">
-      <div class="brands-copy">
-        <h2>¿No encuentras tu repuesto?</h2>
-        <p>Trabajamos las marcas más rodadas del país. Escríbenos el modelo de tu moto y lo conseguimos.</p>
-        <a class="btn btn-accent" id="brandsWhatsapp" href="#" target="_blank" rel="noopener">
-          <i class="ph ph-whatsapp-logo"></i><span>Pedir por WhatsApp</span>
-        </a>
-      </div>
-      <ul class="brands-list" aria-label="Marcas">
-        <li>Bera</li>
-        <li>Keeway</li>
-        <li>Yamaha</li>
-        <li>Honda</li>
-        <li>Suzuki</li>
-        <li>MD Haojue</li>
-      </ul>
+  <!-- ══════════ CONFIANZA ══════════ -->
+  <section class="why" id="confianza">
+    <div class="section-head reveal">
+      <p class="eyebrow">Por qué nosotros</p>
+      <h2>Comprar repuestos online no debería dar miedo</h2>
     </div>
+    <div class="why-grid">
+      <article class="why-card reveal">
+        <i class="ph ph-target"></i>
+        <h3>El ajuste, garantizado</h3>
+        <p>Cada producto muestra a qué marcas y modelos aplica y su referencia OEM. Si el repuesto no le queda a tu carro, lo cambiamos.</p>
+      </article>
+      <article class="why-card reveal">
+        <i class="ph ph-package"></i>
+        <h3>Kits por trabajo</h3>
+        <p>Vendemos kits completos — frenos, tiempo, mantenimiento — con todo lo que el mecánico necesita en una sola compra.</p>
+      </article>
+      <article class="why-card reveal">
+        <i class="ph ph-chat-circle-text"></i>
+        <h3>Asesoría, no solo venta</h3>
+        <p>¿Dudas entre dos piezas? Escríbenos por WhatsApp con tu marca y modelo y te orientamos antes de comprar.</p>
+      </article>
+      <article class="why-card reveal">
+        <i class="ph ph-route"></i>
+        <h3>Alcance nacional</h3>
+        <p>Despachamos a Caracas, La Guaira y todo el país. Coordinas el envío por WhatsApp al confirmar tu pedido.</p>
+      </article>
+    </div>
+
+    <div class="steps reveal">
+      <h3>¿Cómo comprar?</h3>
+      <ol>
+        <li><strong>1.</strong> Filtra por tu marca o busca la pieza</li>
+        <li><strong>2.</strong> Agrégala al carrito</li>
+        <li><strong>3.</strong> Envía el pedido por WhatsApp y coordinamos</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════ CONTACTO ══════════ -->
+  <section class="contact" id="contacto">
+    <div class="contact-inner reveal">
+      <div>
+        <p class="eyebrow">Contacto</p>
+        <h2>¿No encuentras tu repuesto?</h2>
+        <p class="section-sub">Escríbenos con la marca, modelo y la pieza que buscas. Te cotizamos sin compromiso.</p>
+      </div>
+      <a href="#" class="btn btn-primary btn-lg" data-wa-link data-wa-text="Hola, busco un repuesto para mi carro. ¿Me ayudas a cotizar?"><i class="ph ph-whatsapp-logo"></i> Cotizar por WhatsApp</a>
+    </div>
+    <p class="disclaimer">Precios de referencia en USD. El inventario y la disponibilidad se confirman por WhatsApp.</p>
   </section>
 
 </main>
 
-<footer class="footer" id="contacto">
+<footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <span class="brand-name">MY MOTORS <em>SUPPLIES</em></span>
-      <p>Repuestos de moto en Venezuela.<br>Pide por WhatsApp y recibe hoy.</p>
+      <span class="logo-mark">MMS</span>
+      <p><strong>My motors Supplies</strong><br>Repuestos de carro · Venezuela</p>
     </div>
-    <div class="footer-col">
-      <h3>Contacto</h3>
-      <a id="footerWhatsapp" href="#" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i><span>WhatsApp</span></a>
-      <p class="muted"><i class="ph ph-map-pin"></i><span id="footerLocation">Venezuela</span></p>
-      <p class="muted"><i class="ph ph-clock"></i><span id="footerHours">Lun–Sáb · 8am–6pm</span></p>
-    </div>
-    <div class="footer-col">
-      <h3>Catálogo</h3>
-      <div id="footerCats"></div>
+    <div class="footer-info">
+      <p><i class="ph ph-clock"></i> <span data-config="hours"></span></p>
+      <p><i class="ph ph-map-pin"></i> <span data-config="location"></span></p>
     </div>
   </div>
-  <div class="footer-bar">
-    <span>© 2026 My motors Supplies</span>
-    <span class="muted">Precios en USD</span>
-  </div>
+  <p class="footer-note">© 2026 My motors Supplies. Precios ilustrativos de demostración.</p>
 </footer>
 
-<!-- MODAL PRODUCTO -->
-<div class="overlay" id="overlay" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
-    <button class="icon-btn modal-close" id="modalClose" aria-label="Cerrar"><i class="ph ph-x"></i></button>
-    <div class="modal-media"><img id="modalImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt=""></div>
+<!-- ══════════ MODAL PRODUCTO ══════════ -->
+<div class="overlay" id="modalOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modalClose" aria-label="Cerrar"><i class="ph ph-x"></i></button>
+    <div class="modal-media"><img id="modalImg" src="" alt=""></div>
     <div class="modal-body">
-      <p class="tag" id="modalCat"></p>
+      <p class="modal-brand" id="modalBrand"></p>
       <h3 id="modalName"></h3>
-      <p class="muted" id="modalDesc"></p>
-      <p class="price" id="modalPrice"></p>
-      <div class="qty-row">
-        <div class="qty">
-          <button id="qtyMinus" aria-label="Quitar uno"><i class="ph ph-minus"></i></button>
-          <span id="qtyVal">1</span>
-          <button id="qtyPlus" aria-label="Agregar uno"><i class="ph ph-plus"></i></button>
-        </div>
-        <button class="btn btn-accent" id="modalAdd"><i class="ph ph-shopping-cart"></i><span>Agregar</span></button>
+      <p class="modal-desc" id="modalDesc"></p>
+      <dl class="specs">
+        <div><dt>Aplica a</dt><dd id="modalFits"></dd></div>
+        <div><dt>Referencia</dt><dd id="modalOem"></dd></div>
+        <div><dt>Categoría</dt><dd id="modalCat"></dd></div>
+      </dl>
+      <div class="modal-foot">
+        <p class="modal-price" id="modalPrice"></p>
+        <div class="qty"><button id="qtyMinus" aria-label="Menos"><i class="ph ph-minus"></i></button><span id="qtyVal">1</span><button id="qtyPlus" aria-label="Más"><i class="ph ph-plus"></i></button></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="modalAdd"><i class="ph ph-shopping-cart"></i> Agregar al carrito</button>
+        <a class="btn btn-ghost" href="#" id="modalWa"><i class="ph ph-whatsapp-logo"></i> Preguntar</a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CARRITO -->
-<aside class="cart" id="cart" aria-label="Carrito" hidden>
-  <div class="cart-head">
-    <h3>Tu pedido</h3>
-    <button class="icon-btn" id="cartClose" aria-label="Cerrar carrito"><i class="ph ph-x"></i></button>
-  </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-foot">
-    <div class="cart-total"><span>Total</span><strong id="cartTotal">$0.00</strong></div>
-    <button class="btn btn-accent btn-block" id="checkoutBtn"><i class="ph ph-whatsapp-logo"></i><span>Pedir por WhatsApp</span></button>
-    <p class="muted small">Se abre WhatsApp con tu pedido listo para enviar.</p>
-  </div>
-</aside>
-<div class="scrim" id="scrim" hidden></div>
-
-<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<!-- ══════════ CARRITO ══════════ -->
+<div class="overlay" id="cartOverlay" hidden>
+  <aside class="cart" aria-label="Carrito de compras">
+    <div class="cart-head">
+      <h3><i class="ph ph-shopping-cart"></i> Tu pedido <span id="cartHeadCount"></span></h3>
+      <button id="cartClose" aria-label="Cerrar carrito"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="cart-total"><span>Total estimado</span><strong id="cartTotal">$0.00</strong></div>
+      <button class="btn btn-primary btn-block" id="checkoutBtn"><i class="ph ph-whatsapp-logo"></i> Enviar pedido por WhatsApp</button>
+      <button class="btn btn-ghost btn-block" id="clearCart">Vaciar carrito</button>
+      <p class="cart-note">El pedido llega armado a nuestro WhatsApp. Confirmamos disponibilidad y envío por ahí.</p>
+    </div>
+  </aside>
+</div>
 
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
