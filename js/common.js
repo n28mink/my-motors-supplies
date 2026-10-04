@@ -189,7 +189,7 @@
   }
   function refreshReveals() {
     if (!revealIO) return;
-    $$(".reveal:not(.in)").forEach((el, i) => { el.dataset.d = (i % 4) * 90; revealIO.observe(el); });
+    $$(".reveal:not(.in)").forEach((el, i) => { el.dataset.d = (i % 4) * 60; revealIO.observe(el); });
   }
   function initChrome() {
     applyConfig(); buildMarquee(); renderCart(); initReveals(); initCounters();
