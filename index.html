@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My motors Supplies — Repuestos de moto en Venezuela</title>
+<meta name="description" content="Repuestos de moto: frenos, transmisión, motor, eléctrico y suspensión. Pide por WhatsApp y recibe hoy.">
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#inicio" aria-label="My motors Supplies inicio">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">MY MOTORS <em>SUPPLIES</em></span>
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#marcas">Marcas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="cartBtn" aria-label="Abrir carrito">
+        <i class="ph ph-shopping-cart"></i>
+        <span class="cart-count" id="cartCount" hidden>0</span>
+      </button>
+      <a class="btn btn-accent btn-sm" id="navWhatsapp" href="#" target="_blank" rel="noopener">
+        <i class="ph ph-whatsapp-logo"></i><span>Pedir por WhatsApp</span>
+      </a>
+      <button class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <i class="ph ph-list"></i>
+      </button>
+    </div>
+  </div>
+  <nav class="nav-mobile" id="navMobile" aria-label="Móvil" hidden>
+    <a href="#inicio">Inicio</a>
+    <a href="#catalogo">Catálogo</a>
+    <a href="#marcas">Marcas</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<main id="inicio">
+
+  <!-- HERO: split 50/50, left-aligned (anti-center bias) -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Repuestos · Venezuela</p>
+        <h1>Tu moto<br><em>no se detiene.</em></h1>
+        <p class="hero-sub">Frenos, transmisión, motor y más para las marcas más rodadas del país. Pide por WhatsApp.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-accent" href="#catalogo">Ver catálogo</a>
+          <a class="btn btn-ghost" id="heroWhatsapp" href="#" target="_blank" rel="noopener">
+            <i class="ph ph-whatsapp-logo"></i><span>Pedir por WhatsApp</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <img src="img/hero.jpg" alt="Motor de motocicleta en taller" fetchpriority="high">
+        <span class="hero-tick" aria-hidden="true"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP: dividers, not cards -->
+  <section class="trust" aria-label="Ventajas">
+    <div class="trust-inner">
+      <div class="trust-item reveal">
+        <i class="ph ph-truck"></i>
+        <div><strong>Envío a todo el país</strong><span>Despachamos el mismo día</span></div>
+      </div>
+      <div class="trust-item reveal">
+        <i class="ph ph-shield-check"></i>
+        <div><strong>Garantía en cada pieza</strong><span>Originales y genéricos de calidad</span></div>
+      </div>
+      <div class="trust-item reveal">
+        <i class="ph ph-currency-dollar"></i>
+        <div><strong>Precios en USD</strong><span>Sin sorpresas al pagar</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATÁLOGO -->
+  <section class="catalog" id="catalogo">
+    <div class="catalog-head">
+      <h2>Catálogo</h2>
+      <div class="catalog-tools">
+        <label class="search">
+          <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+          <input type="search" id="searchInput" placeholder="Buscar repuesto…" aria-label="Buscar repuesto">
+        </label>
+      </div>
+    </div>
+    <div class="cat-pills" id="catPills" role="tablist" aria-label="Categorías"></div>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="emptyState" hidden>No encontramos ese repuesto. <a href="#" id="emptyWhatsapp" target="_blank" rel="noopener">Pregúntanos por WhatsApp</a> y lo buscamos.</p>
+  </section>
+
+  <!-- MARCAS / SERVICIO: split editorial, layout distinto al catálogo -->
+  <section class="brands" id="marcas">
+    <div class="brands-inner">
+      <div class="brands-copy">
+        <h2>¿No encuentras tu repuesto?</h2>
+        <p>Trabajamos las marcas más rodadas del país. Escríbenos el modelo de tu moto y lo conseguimos.</p>
+        <a class="btn btn-accent" id="brandsWhatsapp" href="#" target="_blank" rel="noopener">
+          <i class="ph ph-whatsapp-logo"></i><span>Pedir por WhatsApp</span>
+        </a>
+      </div>
+      <ul class="brands-list" aria-label="Marcas">
+        <li>Bera</li>
+        <li>Keeway</li>
+        <li>Yamaha</li>
+        <li>Honda</li>
+        <li>Suzuki</li>
+        <li>MD Haojue</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer" id="contacto">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-name">MY MOTORS <em>SUPPLIES</em></span>
+      <p>Repuestos de moto en Venezuela.<br>Pide por WhatsApp y recibe hoy.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Contacto</h3>
+      <a id="footerWhatsapp" href="#" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i><span>WhatsApp</span></a>
+      <p class="muted"><i class="ph ph-map-pin"></i><span id="footerLocation">Venezuela</span></p>
+      <p class="muted"><i class="ph ph-clock"></i><span id="footerHours">Lun–Sáb · 8am–6pm</span></p>
+    </div>
+    <div class="footer-col">
+      <h3>Catálogo</h3>
+      <div id="footerCats"></div>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span>© 2026 My motors Supplies</span>
+    <span class="muted">Precios en USD</span>
+  </div>
+</footer>
+
+<!-- MODAL PRODUCTO -->
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+    <button class="icon-btn modal-close" id="modalClose" aria-label="Cerrar"><i class="ph ph-x"></i></button>
+    <div class="modal-media"><img id="modalImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt=""></div>
+    <div class="modal-body">
+      <p class="tag" id="modalCat"></p>
+      <h3 id="modalName"></h3>
+      <p class="muted" id="modalDesc"></p>
+      <p class="price" id="modalPrice"></p>
+      <div class="qty-row">
+        <div class="qty">
+          <button id="qtyMinus" aria-label="Quitar uno"><i class="ph ph-minus"></i></button>
+          <span id="qtyVal">1</span>
+          <button id="qtyPlus" aria-label="Agregar uno"><i class="ph ph-plus"></i></button>
+        </div>
+        <button class="btn btn-accent" id="modalAdd"><i class="ph ph-shopping-cart"></i><span>Agregar</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CARRITO -->
+<aside class="cart" id="cart" aria-label="Carrito" hidden>
+  <div class="cart-head">
+    <h3>Tu pedido</h3>
+    <button class="icon-btn" id="cartClose" aria-label="Cerrar carrito"><i class="ph ph-x"></i></button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>Total</span><strong id="cartTotal">$0.00</strong></div>
+    <button class="btn btn-accent btn-block" id="checkoutBtn"><i class="ph ph-whatsapp-logo"></i><span>Pedir por WhatsApp</span></button>
+    <p class="muted small">Se abre WhatsApp con tu pedido listo para enviar.</p>
+  </div>
+</aside>
+<div class="scrim" id="scrim" hidden></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
