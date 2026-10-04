@@ -4,14 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My motors Supplies — Repuestos de carro en Venezuela</title>
-<meta name="description" content="Repuestos de carro Chevrolet, Toyota, Honda, Ford, Hyundai, Kia, Nissan y Mazda. Envíos a todo el país. Cotiza por WhatsApp.">
-<link rel="icon" href="img/logo.png" onerror="this.remove()">
+<meta name="description" content="Repuestos de carro Chevrolet, Toyota, Honda, Ford, Hyundai, Kia, Nissan y Mazda. Kits completos, envío a todo el país. Cotiza por WhatsApp.">
 <link rel="preload" href="fonts/BarlowCondensed-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Barlow-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/styles.css">
 <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 </head>
-<body>
+<body data-page="home">
 
 <!-- ══════════ TOPBAR ══════════ -->
 <div class="topbar">
@@ -28,23 +27,19 @@
     <span class="logo-text">My motors <em>Supplies</em></span>
   </a>
   <nav class="nav" id="nav">
-    <a href="#catalogo">Catálogo</a>
-    <a href="#confianza">Por qué nosotros</a>
+    <a href="#kits">Kits</a>
+    <a href="#categorias">Categorías</a>
+    <a href="catalogo.html">Catálogo</a>
+    <a href="#confianza">Nosotros</a>
     <a href="#contacto">Contacto</a>
   </nav>
   <div class="header-actions">
-    <button class="search-toggle" id="searchToggle" aria-label="Buscar"><i class="ph ph-magnifying-glass"></i></button>
     <button class="cart-btn" id="cartOpen" aria-label="Abrir carrito">
       <i class="ph ph-shopping-cart"></i><span class="cart-count" id="cartCount">0</span>
     </button>
     <button class="menu-btn" id="menuBtn" aria-label="Menú"><i class="ph ph-list"></i></button>
   </div>
 </header>
-<div class="search-bar" id="searchBar" hidden>
-  <i class="ph ph-magnifying-glass"></i>
-  <input type="search" id="searchInput" placeholder="Busca pastillas, alternador, Aveo, Corolla…" autocomplete="off">
-  <button id="searchClose" aria-label="Cerrar búsqueda"><i class="ph ph-x"></i></button>
-</div>
 
 <main id="top">
 
@@ -56,7 +51,7 @@
         <h1 class="hero-anim">El repuesto exacto<br>para tu carro, <em>sin vueltas.</em></h1>
         <p class="hero-sub hero-anim">Chevrolet, Toyota, Honda, Ford, Hyundai y más. Busca por marca, verifica la compatibilidad y pide por WhatsApp. Envíos a todo el país.</p>
         <div class="hero-ctas hero-anim">
-          <a href="#catalogo" class="btn btn-primary">Ver catálogo <i class="ph ph-arrow-down"></i></a>
+          <a href="catalogo.html" class="btn btn-primary">Ver catálogo <i class="ph ph-arrow-right"></i></a>
           <a href="#" class="btn btn-ghost" data-wa-link><i class="ph ph-whatsapp-logo"></i> Asesoría por WhatsApp</a>
         </div>
         <div class="hero-stats hero-anim">
@@ -71,10 +66,21 @@
         <div class="hero-card hero-card-b"><i class="ph ph-truck"></i><div><strong>Envío nacional</strong><span>Caracas · La Guaira · todo el país</span></div></div>
       </div>
     </div>
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track" id="marqueeTrack"></div>
-    </div>
   </section>
+
+  <!-- ══════════ BUSCADOR ══════════ -->
+  <section class="search-band">
+    <form class="search-band-inner reveal" id="homeSearch">
+      <i class="ph ph-magnifying-glass"></i>
+      <input type="search" id="homeSearchInput" placeholder="¿Qué repuesto buscas? Ej: pastillas, alternador, Aveo…" autocomplete="off" aria-label="Buscar repuesto">
+      <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+  </section>
+
+  <!-- ══════════ MARQUESINA ══════════ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
 
   <!-- ══════════ TRUST ══════════ -->
   <section class="trust">
@@ -86,32 +92,33 @@
     </div>
   </section>
 
-  <!-- ══════════ CATÁLOGO ══════════ -->
-  <section class="catalog" id="catalogo">
+  <!-- ══════════ KITS COMPLETOS ══════════ -->
+  <section class="kits" id="kits">
     <div class="section-head reveal">
-      <p class="eyebrow">Catálogo</p>
-      <h2>Encuentra tu repuesto</h2>
-      <p class="section-sub">Filtra por la marca de tu carro, por categoría o busca directo por pieza o modelo.</p>
+      <p class="eyebrow">Promociones</p>
+      <h2>Kits completos</h2>
+      <p class="section-sub">Todo el trabajo en una sola compra: las piezas que van juntas, juntas. Sin vueltas buscando una por una.</p>
     </div>
+    <div class="kits-grid" id="kitsGrid"></div>
+  </section>
 
-    <div class="filters reveal">
-      <div class="filter-group">
-        <span class="filter-label"><i class="ph ph-car"></i> Marca de tu carro</span>
-        <div class="chips" id="brandChips"></div>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label"><i class="ph ph-gear-six"></i> Categoría</span>
-        <div class="chips chips-soft" id="catChips"></div>
-      </div>
+  <!-- ══════════ CATEGORÍAS ══════════ -->
+  <section class="cats" id="categorias">
+    <div class="section-head reveal">
+      <p class="eyebrow">Por sección</p>
+      <h2>Explora por categoría</h2>
+      <p class="section-sub">Cada sección tiene su propio inventario. Toca una para ver todo lo de esa parte del vehículo.</p>
     </div>
+    <div class="cats-grid" id="catsGrid"></div>
+  </section>
 
-    <p class="result-count reveal" id="resultCount"></p>
-    <div class="grid" id="grid"></div>
-    <div class="empty" id="empty" hidden>
-      <i class="ph ph-magnifying-glass"></i>
-      <p>No encontramos repuestos con esos filtros.</p>
-      <button class="btn btn-ghost" id="emptyReset">Limpiar filtros</button>
+  <!-- ══════════ MÁS VENDIDOS ══════════ -->
+  <section class="featured" id="destacados">
+    <div class="section-head reveal">
+      <p class="eyebrow">Los favoritos</p>
+      <h2>Más vendidos</h2>
     </div>
+    <div class="scroll-row" id="featuredRow"></div>
   </section>
 
   <!-- ══════════ CONFIANZA ══════════ -->
@@ -146,7 +153,7 @@
     <div class="steps reveal">
       <h3>¿Cómo comprar?</h3>
       <ol>
-        <li><strong>1.</strong> Filtra por tu marca o busca la pieza</li>
+        <li><strong>1.</strong> Busca por marca, categoría o pieza</li>
         <li><strong>2.</strong> Agrégala al carrito</li>
         <li><strong>3.</strong> Envía el pedido por WhatsApp y coordinamos</li>
       </ol>
@@ -191,6 +198,10 @@
       <p class="modal-brand" id="modalBrand"></p>
       <h3 id="modalName"></h3>
       <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-includes" id="modalIncludes" hidden>
+        <p class="includes-title">El kit incluye:</p>
+        <ul id="modalIncludesList"></ul>
+      </div>
       <dl class="specs">
         <div><dt>Aplica a</dt><dd id="modalFits"></dd></div>
         <div><dt>Referencia</dt><dd id="modalOem"></dd></div>
@@ -226,6 +237,7 @@
 </div>
 
 <script src="js/data.js"></script>
-<script src="js/app.js"></script>
+<script src="js/common.js"></script>
+<script src="js/home.js"></script>
 </body>
 </html>

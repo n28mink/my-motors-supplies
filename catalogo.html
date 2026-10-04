@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo — My motors Supplies</title>
+<meta name="description" content="Catálogo completo de repuestos de carro: filtra por marca, categoría o busca tu pieza.">
+<link rel="preload" href="fonts/BarlowCondensed-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Barlow-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+</head>
+<body data-page="catalog">
+
+<div class="topbar">
+  <span><i class="ph ph-map-pin"></i> <span data-config="location">Venezuela</span></span>
+  <span class="topbar-sep">·</span>
+  <span><i class="ph ph-clock"></i> <span data-config="hours">Lun–Sáb · 8am–6pm</span></span>
+  <a class="topbar-wa" href="#" data-wa-link><i class="ph ph-whatsapp-logo"></i> Cotiza por WhatsApp</a>
+</div>
+
+<header class="header" id="header">
+  <a class="logo" href="index.html">
+    <span class="logo-mark">MMS</span>
+    <span class="logo-text">My motors <em>Supplies</em></span>
+  </a>
+  <nav class="nav" id="nav">
+    <a href="index.html">Inicio</a>
+    <a href="index.html#kits">Kits</a>
+    <a href="index.html#categorias">Categorías</a>
+    <a href="catalogo.html" class="active">Catálogo</a>
+    <a href="index.html#contacto">Contacto</a>
+  </nav>
+  <div class="header-actions">
+    <button class="cart-btn" id="cartOpen" aria-label="Abrir carrito">
+      <i class="ph ph-shopping-cart"></i><span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="menu-btn" id="menuBtn" aria-label="Menú"><i class="ph ph-list"></i></button>
+  </div>
+</header>
+
+<main>
+  <section class="catalog-page">
+    <div class="catalog-head">
+      <a href="index.html" class="back-link"><i class="ph ph-arrow-left"></i> Volver al inicio</a>
+      <p class="eyebrow">Inventario completo</p>
+      <h1>Catálogo</h1>
+      <p class="section-sub">Filtra por la marca de tu carro, por sección o busca directo la pieza.</p>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-search">
+        <i class="ph ph-magnifying-glass"></i>
+        <input type="search" id="searchInput" placeholder="Busca pastillas, alternador, Aveo, Corolla…" autocomplete="off" aria-label="Buscar en el catálogo">
+      </div>
+      <div class="filter-group">
+        <span class="filter-label"><i class="ph ph-car"></i> Marca</span>
+        <div class="chips" id="brandChips"></div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label"><i class="ph ph-gear-six"></i> Sección</span>
+        <div class="chips chips-soft" id="catChips"></div>
+      </div>
+      <div class="filter-row">
+        <p class="result-count" id="resultCount"></p>
+        <button class="link-btn" id="clearFilters"><i class="ph ph-x-circle"></i> Limpiar filtros</button>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>
+      <i class="ph ph-magnifying-glass"></i>
+      <p>No encontramos repuestos con esos filtros.</p>
+      <button class="btn btn-ghost" id="emptyReset">Limpiar filtros</button>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-mark">MMS</span>
+      <p><strong>My motors Supplies</strong><br>Repuestos de carro · Venezuela</p>
+    </div>
+    <div class="footer-info">
+      <p><i class="ph ph-clock"></i> <span data-config="hours"></span></p>
+      <p><i class="ph ph-map-pin"></i> <span data-config="location"></span></p>
+    </div>
+  </div>
+  <p class="footer-note">© 2026 My motors Supplies. Precios ilustrativos de demostración.</p>
+</footer>
+
+<!-- ══════════ MODAL PRODUCTO ══════════ -->
+<div class="overlay" id="modalOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modalClose" aria-label="Cerrar"><i class="ph ph-x"></i></button>
+    <div class="modal-media"><img id="modalImg" src="" alt=""></div>
+    <div class="modal-body">
+      <p class="modal-brand" id="modalBrand"></p>
+      <h3 id="modalName"></h3>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-includes" id="modalIncludes" hidden>
+        <p class="includes-title">El kit incluye:</p>
+        <ul id="modalIncludesList"></ul>
+      </div>
+      <dl class="specs">
+        <div><dt>Aplica a</dt><dd id="modalFits"></dd></div>
+        <div><dt>Referencia</dt><dd id="modalOem"></dd></div>
+        <div><dt>Categoría</dt><dd id="modalCat"></dd></div>
+      </dl>
+      <div class="modal-foot">
+        <p class="modal-price" id="modalPrice"></p>
+        <div class="qty"><button id="qtyMinus" aria-label="Menos"><i class="ph ph-minus"></i></button><span id="qtyVal">1</span><button id="qtyPlus" aria-label="Más"><i class="ph ph-plus"></i></button></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="modalAdd"><i class="ph ph-shopping-cart"></i> Agregar al carrito</button>
+        <a class="btn btn-ghost" href="#" id="modalWa"><i class="ph ph-whatsapp-logo"></i> Preguntar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CARRITO ══════════ -->
+<div class="overlay" id="cartOverlay" hidden>
+  <aside class="cart" aria-label="Carrito de compras">
+    <div class="cart-head">
+      <h3><i class="ph ph-shopping-cart"></i> Tu pedido <span id="cartHeadCount"></span></h3>
+      <button id="cartClose" aria-label="Cerrar carrito"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="cart-total"><span>Total estimado</span><strong id="cartTotal">$0.00</strong></div>
+      <button class="btn btn-primary btn-block" id="checkoutBtn"><i class="ph ph-whatsapp-logo"></i> Enviar pedido por WhatsApp</button>
+      <button class="btn btn-ghost btn-block" id="clearCart">Vaciar carrito</button>
+      <p class="cart-note">El pedido llega armado a nuestro WhatsApp. Confirmamos disponibilidad y envío por ahí.</p>
+    </div>
+  </aside>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/common.js"></script>
+<script src="js/catalog.js"></script>
+</body>
+</html>
