@@ -117,9 +117,10 @@ h2 { font-size: clamp(2rem, 4.5vw, 3rem); text-transform: uppercase; }
 }
 .header.scrolled { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45); }
 .logo { display: flex; align-items: center; gap: 0.7rem; }
-.logo-mark {
-  font-family: var(--font-d); font-weight: 600; font-size: 1rem; letter-spacing: 0.08em;
-  background: var(--accent); color: #14100b; padding: 0.35rem 0.55rem; border-radius: var(--radius);
+.logo-mark { width: 2.7rem; height: 2.7rem; display: inline-flex; flex-shrink: 0; }
+.logo-mark svg { width: 100%; height: 100%; display: block; transition: transform 0.6s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  a.logo:hover .logo-mark svg { transform: rotate(45deg); }
 }
 .logo-text { font-size: 1.35rem; text-transform: uppercase; letter-spacing: 0.04em; }
 .logo-text em { font-style: normal; color: var(--accent-hot); }
@@ -450,7 +451,7 @@ h2 { font-size: clamp(2rem, 4.5vw, 3rem); text-transform: uppercase; }
 .modal-actions .btn { flex: 1; justify-content: center; white-space: nowrap; }
 
 .cart {
-  position: fixed; top: 0; right: 0; height: 100dvh; width: min(430px, 100vw);
+  position: fixed; top: 0; right: 0; height: 100dvh; width: min(380px, 94vw);
   background: var(--surface); border-left: 1px solid var(--line);
   display: flex; flex-direction: column;
   animation: cartIn 0.32s var(--ease-drawer);
@@ -458,18 +459,18 @@ h2 { font-size: clamp(2rem, 4.5vw, 3rem); text-transform: uppercase; }
 @keyframes cartIn { from { transform: translateX(60px); opacity: 0; } }
 .cart-head {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 1.2rem 1.4rem; border-bottom: 1px solid var(--line);
+  padding: 1rem 1.15rem; border-bottom: 1px solid var(--line);
 }
 .cart-head h3 { font-size: 1.4rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.6rem; }
 .cart-head h3 i { color: var(--accent-hot); }
 .cart-head h3 span { color: var(--faint); font-size: 1.1rem; }
 .cart-head button { font-size: 1.4rem; color: var(--muted); display: inline-flex; }
 .cart-head button:hover { color: var(--text); }
-.cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
+.cart-items { flex: 1; min-height: 0; overflow-y: auto; padding: 0.9rem 1.15rem; display: flex; flex-direction: column; gap: 0.85rem; }
 .cart-empty { text-align: center; color: var(--faint); padding: 3rem 1rem; }
 .cart-empty i { font-size: 3rem; margin-bottom: 0.8rem; display: block; }
-.cart-item { display: grid; grid-template-columns: 72px 1fr auto; gap: 0.9rem; align-items: center; animation: cardIn 0.4s var(--ease-out); }
-.cart-item img { width: 72px; height: 72px; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--line); }
+.cart-item { display: grid; grid-template-columns: 58px 1fr auto; gap: 0.8rem; align-items: center; animation: cardIn 0.4s var(--ease-out); }
+.cart-item img { width: 58px; height: 58px; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--line); }
 .cart-item-info strong { display: block; font-size: 0.9rem; line-height: 1.3; }
 .cart-item-info span { font-size: 0.82rem; color: var(--faint); }
 .cart-item-info .qty { margin-top: 0.45rem; }
@@ -478,7 +479,7 @@ h2 { font-size: clamp(2rem, 4.5vw, 3rem); text-transform: uppercase; }
 .cart-item-right strong { font-family: var(--font-d); font-size: 1.2rem; }
 .cart-remove { color: var(--faint); font-size: 1.1rem; transition: color 0.25s; }
 .cart-remove:hover { color: #ff6b6b; }
-.cart-foot { border-top: 1px solid var(--line); padding: 1.2rem 1.4rem 1.4rem; display: grid; gap: 0.8rem; }
+.cart-foot { border-top: 1px solid var(--line); padding: 1rem 1.15rem 1.15rem; display: grid; gap: 0.7rem; }
 .cart-total { display: flex; justify-content: space-between; align-items: baseline; }
 .cart-total span { color: var(--muted); }
 .cart-total strong { font-family: var(--font-d); font-size: 1.9rem; }
