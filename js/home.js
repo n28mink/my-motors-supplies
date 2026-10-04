@@ -43,11 +43,12 @@
 
   function renderCats() {
     const grid = $("#catsGrid");
-    CATEGORIES.filter((c) => c !== "Todos").forEach((c) => {
+    CATEGORIES.filter((c) => c !== "Todos").forEach((c, idx) => {
       const n = PRODUCTS.filter((p) => p.category === c).length;
       const a = document.createElement("a");
       a.className = "cat-tile reveal";
       a.href = "catalogo.html?cat=" + encodeURIComponent(c);
+      a.setAttribute("data-index", String(idx + 1).padStart(2, "0"));
       a.innerHTML =
         '<div class="cat-media"><img src="' + (CAT_IMG[c] || "img/hero.jpg") + '" alt="' + c + '" loading="lazy"></div>' +
         '<div class="cat-body"><h3>' + c + "</h3>" +
