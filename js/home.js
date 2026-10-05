@@ -1,7 +1,7 @@
 /* My motors Supplies — homepage: kits, categorías, más vendidos, buscador. */
 (function () {
   "use strict";
-  const { $, money, productCard, addToCart, openModal, refreshReveals } = window.Store;
+  const { $, money, productCard, addToCart, openModal, refreshReveals, waLink, toast } = window.Store;
 
   const CAT_IMG = {
     "Frenos": "img/p04.jpg",
@@ -78,5 +78,33 @@
       const q = $("#homeSearchInput").value.trim();
       location.href = "catalogo.html" + (q ? "?q=" + encodeURIComponent(q) : "");
     });
+
+    /* ── Formulario de contacto → WhatsApp (con validación) ── */
+    const cForm = $("#contactForm");
+    if (cForm) {
+      const nameI = $("#cfName"), msgI = $("#cfMsg");
+      const nameE = $("#cfNameErr"), msgE = $("#cfMsgErr");
+      const setErr = (input, errEl, msg) => {
+        errEl.textContent = msg || "";
+        errEl.hidden = !msg;
+        input.classList.toggle("invalid", !!msg);
+        return !msg;
+      };
+      nameI.addEventListener("input", () => setErr(nameI, nameE, ""));
+      msgI.addEventListener("input", () => setErr(msgI, msgE, ""));
+      cForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = nameI.value.trim(), msg = msgI.value.trim();
+        let ok = true;
+        if (name.length < 2) { setErr(nameI, nameE, "Escribe tu nombre (mínimo 2 letras)."); ok = false; }
+        else setErr(nameI, nameE, "");
+        if (msg.length < 10) { setErr(msgI, msgE, "Cuéntanos un poco más (mínimo 10 caracteres)."); ok = false; }
+        else setErr(msgI, msgE, "");
+        if (!ok) return;
+        window.open(waLink("Hola, soy " + name + ". " + msg), "_blank", "noopener");
+        cForm.reset();
+        toast("Abriendo WhatsApp con tu mensaje…");
+      });
+    }
   });
 })();
