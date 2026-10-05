@@ -46,6 +46,7 @@
 
   <!-- ══════════ HERO ══════════ -->
   <section class="hero">
+    <div class="hero-shader" aria-hidden="true"><canvas id="heroShaderCanvas"></canvas></div>
     <div class="hero-inner">
       <div class="hero-copy">
         <p class="eyebrow hero-anim">Repuestos de carro · Venezuela</p>
@@ -260,5 +261,15 @@
 <script src="js/data.js"></script>
 <script src="js/common.js"></script>
 <script src="js/home.js"></script>
+<script src="js/vendor/three.min.js" defer></script>
+<script src="js/hero-shader.js" defer></script>
+<script defer>
+window.addEventListener("DOMContentLoaded", function () {
+  var c = document.getElementById("heroShaderCanvas");
+  if (c && window.initHeroShader) {
+    window.initHeroShader(c, { theme: "naranja", glow: 0.8, speed: 0.9 });
+  }
+});
+</script>
 </body>
 </html>
