@@ -749,3 +749,10 @@ h2 { font-size: clamp(2rem, 4.5vw, 3rem); text-transform: uppercase; }
 .error404 h1 { font-family: var(--font-d); font-size: 1.8rem; font-weight: 600; margin: 1rem 0 0.6rem; }
 .error404 p { color: var(--muted); margin-bottom: 2rem; }
 .error404 .actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+
+/* ============ HERO DE PARTÍCULAS ============ */
+.hero-media .stage { position: absolute; inset: 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+.hero-media .stage[hidden] { display: none; }
+#particleCanvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; }
+#particleCanvas:active { cursor: grabbing; }
+#particleCanvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
