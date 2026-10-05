@@ -7,6 +7,7 @@
 <meta name="description" content="Repuestos de carro Chevrolet, Toyota, Honda, Ford, Hyundai, Kia, Nissan y Mazda. Kits completos, envío a todo el país. Cotiza por WhatsApp.">
 <link rel="preload" href="fonts/BarlowCondensed-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Barlow-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="img/hero.jpg" fetchpriority="high">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/phosphor.css">
 </head>
@@ -162,18 +163,35 @@
 
   <!-- ══════════ CONTACTO ══════════ -->
   <section class="contact" id="contacto">
-    <div class="contact-inner reveal">
+    <div class="contact-grid reveal">
       <div>
         <p class="eyebrow">Contacto</p>
         <h2>¿No encuentras tu repuesto?</h2>
         <p class="section-sub">Escríbenos con la marca, modelo y la pieza que buscas. Te cotizamos sin compromiso.</p>
+        <a href="#" class="btn btn-primary btn-lg" data-wa-link data-wa-text="Hola, busco un repuesto para mi carro. ¿Me ayudas a cotizar?"><i class="ph ph-whatsapp-logo"></i> Cotizar por WhatsApp</a>
       </div>
-      <a href="#" class="btn btn-primary btn-lg" data-wa-link data-wa-text="Hola, busco un repuesto para mi carro. ¿Me ayudas a cotizar?"><i class="ph ph-whatsapp-logo"></i> Cotizar por WhatsApp</a>
+      <form class="contact-form" id="contactForm" novalidate>
+        <h3>Déjanos tu consulta</h3>
+        <label class="field">Tu nombre
+          <input type="text" id="cfName" placeholder="Ej: Carlos Pérez" autocomplete="name" maxlength="60">
+        </label>
+        <p class="field-error" id="cfNameErr" hidden></p>
+        <label class="field">Tu mensaje
+          <textarea id="cfMsg" rows="4" maxlength="500" placeholder="Ej: Busco pastillas de freno delanteras para un Aveo…"></textarea>
+        </label>
+        <p class="field-error" id="cfMsgErr" hidden></p>
+        <button type="submit" class="btn btn-primary"><i class="ph ph-whatsapp-logo"></i> Enviar por WhatsApp</button>
+        <p class="form-note">Al enviar se abrirá WhatsApp con tu mensaje listo.</p>
+      </form>
     </div>
     <p class="disclaimer">Precios de referencia en USD. El inventario y la disponibilidad se confirman por WhatsApp.</p>
   </section>
 
 </main>
+<!-- ══════════ BOTONES FLOTANTES ══════════ -->
+<a href="#" class="float-wa" data-wa-link data-wa-text="Hola, quiero cotizar un repuesto." aria-label="Cotizar por WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+<button class="to-top" id="toTop" aria-label="Volver arriba"><i class="ph ph-arrow-up"></i></button>
+
 
 <footer class="footer">
   <div class="footer-inner">
