@@ -211,6 +211,29 @@
       if (e.key === "Escape") ["#modalOverlay", "#cartOverlay"].forEach((s) => { const o = $(s); if (o && !o.hidden) hideOverlay(o); });
     });
     window.addEventListener("scroll", () => { const h = $("#header"); if (h) h.classList.toggle("scrolled", scrollY > 10); }, { passive: true });
+
+    /* ── Volver arriba ── */
+    const toTop = $("#toTop");
+    if (toTop) {
+      const onScrollTop = () => toTop.classList.toggle("show", scrollY > 600);
+      window.addEventListener("scroll", onScrollTop, { passive: true });
+      onScrollTop();
+      toTop.addEventListener("click", () => {
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      });
+    }
+
+    /* ── Fade-in de imágenes de tarjetas (skeleton sutil) ── */
+    const markLoaded = (img) => img.classList.add("loaded");
+    document.addEventListener("load", (e) => {
+      const t = e.target;
+      if (t && t.tagName === "IMG" && t.closest(".card-media,.kit-media,.cat-media")) markLoaded(t);
+    }, true);
+    document.addEventListener("error", (e) => {
+      const t = e.target;
+      if (t && t.tagName === "IMG" && t.closest(".card-media,.kit-media,.cat-media")) markLoaded(t);
+    }, true);
   }
 
   window.Store = { $, $$, money, waLink, openModal, addToCart, productCard, toast, initChrome, showOverlay, hideOverlay, refreshReveals };
