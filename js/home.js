@@ -106,5 +106,18 @@
         toast("Abriendo WhatsApp con tu mensaje…");
       });
     }
+
+    /* ── Hero de partículas (WebGPU; fallback = foto estática) ── */
+    (function initParticleHeroBoot() {
+      if (!("gpu" in navigator)) return;
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const boot = () => {
+        import("js/hero-particles.js")
+          .then((m) => m.initParticleHero().catch(() => {}))
+          .catch(() => {});
+      };
+      if ("requestIdleCallback" in window) requestIdleCallback(boot, { timeout: 4000 });
+      else setTimeout(boot, 1200);
+    })();
   });
 })();
