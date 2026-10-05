@@ -46,6 +46,7 @@
 
   <!-- ══════════ HERO ══════════ -->
   <section class="hero">
+    <div class="hero-aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
     <div class="hero-shader" aria-hidden="true"><canvas id="heroShaderCanvas"></canvas></div>
     <div class="hero-inner">
       <div class="hero-copy">
@@ -267,7 +268,7 @@
 window.addEventListener("DOMContentLoaded", function () {
   var c = document.getElementById("heroShaderCanvas");
   if (c && window.initHeroShader) {
-    window.initHeroShader(c, { theme: "naranja", glow: 0.8, speed: 0.9 });
+    window.initHeroShader(c, { theme: "naranja", glow: 1.05, speed: 0.9 });
   }
 });
 </script>

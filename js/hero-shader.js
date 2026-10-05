@@ -40,7 +40,10 @@ void main() {
   color += finalGlow * pow(intensity, 1.5) * 1.2 * u_glow;
   float vignette = mix(1.0, smoothstep(1.2, 0.5, length(st - vec2(0.5, 0.0))), u_vignette);
   color *= vignette;
-  gl_FragColor = vec4(color, 1.0);
+  /* Alfa por luminancia: las zonas oscuras quedan translúcidas para que
+     la aurora CSS de base se vea a través; el resplandor suma encima. */
+  float lum = dot(color, vec3(0.3333));
+  gl_FragColor = vec4(color, clamp(lum * 2.5, 0.0, 1.0));
 }
 `;
 
@@ -80,6 +83,7 @@ window.initHeroShader = function(canvas, opts = {}) {
     vertexShader: VERT,
     fragmentShader: FRAG,
     uniforms,
+    transparent: true,
     depthWrite: false,
     depthTest: false,
   });
